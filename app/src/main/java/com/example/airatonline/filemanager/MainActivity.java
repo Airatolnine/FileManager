@@ -2,7 +2,9 @@ package com.example.airatonline.filemanager;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -42,9 +44,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
             Log.d("AAAA", file.getAbsolutePath());
-            String[] files = file.list();
+            File[] files = file.listFiles();
+            Element[] e = new Element[files.length];
+            for (int i = 0; i < files.length; i++) {
+                Element tmp;
+                if (files[i].isDirectory()) {
+                    tmp = new Element(files[i].getName(), R.drawable.ic_folder);
+                }
+                else {
+                    tmp = new Element(files[i].getName(), R.mipmap.ic_file);
+                }
+                e[i]= tmp;
+            }
             Log.d("files", Arrays.toString(files));
-            myAdapter = new MyAdapter(files);
+            myAdapter = new MyAdapter(e, this);
             recyclerView.setAdapter(myAdapter);
         }
 
@@ -62,6 +75,22 @@ public class MainActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+                    Log.d("AAAA", file.getAbsolutePath());
+                    File[] files = file.listFiles();
+                    Element[] e = new Element[files.length];
+                    for (int i = 0; i < files.length; i++) {
+                        e[i].text = files[i].getName();
+                        if (files[i].isDirectory()) {
+                            e[i].image = R.drawable.ic_folder;
+                        }
+                        else {
+                            e[i].image = R.mipmap.ic_file;
+                        }
+                    }
+                    Log.d("files", Arrays.toString(files));
+                    myAdapter = new MyAdapter(e, this);
+                    recyclerView.setAdapter(myAdapter);
                 } else {
 
                     // permission denied, boo! Disable the
@@ -74,5 +103,11 @@ public class MainActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }
