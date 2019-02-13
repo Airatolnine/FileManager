@@ -16,13 +16,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager myManager;
+    String path;
 
     String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -30,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+
+
+        try{
+            path = intent.getStringExtra("folder");
+            Log.d("AAA|main", path);
+        }catch (Exception e){
+            path = null;
+        }
+
 
         recyclerView = (RecyclerView) findViewById(R.id.list_item);
         recyclerView.setHasFixedSize(true);
@@ -42,23 +57,11 @@ public class MainActivity extends AppCompatActivity {
                     permissions,
                     1);
         } else {
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-            Log.d("AAAA", file.getAbsolutePath());
-            File[] files = file.listFiles();
-            Element[] e = new Element[files.length];
-            for (int i = 0; i < files.length; i++) {
-                Element tmp;
-                if (files[i].isDirectory()) {
-                    tmp = new Element(files[i].getName(), R.drawable.ic_folder);
-                }
-                else {
-                    tmp = new Element(files[i].getName(), R.mipmap.ic_file);
-                }
-                e[i]= tmp;
+            if(path!=null){
+                fillActivity(path);
+            }else{
+                fillActivity(Environment.getExternalStorageDirectory().getAbsolutePath());
             }
-            Log.d("files", Arrays.toString(files));
-            myAdapter = new MyAdapter(e, this);
-            recyclerView.setAdapter(myAdapter);
         }
 
     }
@@ -75,22 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-                    Log.d("AAAA", file.getAbsolutePath());
-                    File[] files = file.listFiles();
-                    Element[] e = new Element[files.length];
-                    for (int i = 0; i < files.length; i++) {
-                        e[i].text = files[i].getName();
-                        if (files[i].isDirectory()) {
-                            e[i].image = R.drawable.ic_folder;
-                        }
-                        else {
-                            e[i].image = R.mipmap.ic_file;
-                        }
+                    if(path!=null){
+                        fillActivity(path);
+                    }else{
+                        fillActivity(Environment.getExternalStorageDirectory().getAbsolutePath());
                     }
-                    Log.d("files", Arrays.toString(files));
-                    myAdapter = new MyAdapter(e, this);
-                    recyclerView.setAdapter(myAdapter);
                 } else {
 
                     // permission denied, boo! Disable the
@@ -108,6 +100,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    private void fillActivity(String path) {
+        File file = new File(path);
+        Log.d("AAAA", file.getAbsolutePath());
+        File[] files = file.listFiles();
+        if(files!=null){
+            List<File> fileList = new ArrayList<>();
+            fileList.addAll(Arrays.asList(files));
+            Collections.sort(fileList);
+            Element[] e = new Element[files.length];
+            for (int i = 0; i < fileList.size(); i++) {
+                Element tmp;
+                if (fileList.get(i).isDirectory()) {
+                    tmp = new Element(fileList.get(i).getName(), R.mipmap.ic_folder);
+                } else {
+                    tmp = new Element(fileList.get(i).getName(), R.mipmap.ic_file);
+                }
+                e[i] = tmp;
+            }
+            Log.d("files", Arrays.toString(files));
+            myAdapter = new MyAdapter(e, this, path);
+            recyclerView.setAdapter(myAdapter);
+        }
 
     }
 }
