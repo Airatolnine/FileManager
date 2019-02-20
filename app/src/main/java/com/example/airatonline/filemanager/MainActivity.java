@@ -155,20 +155,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        String[] a = path.split("/");
-        Log.d("path", path);
-        StringBuilder newPath = new StringBuilder();
-        for (int i = 0; i < a.length - 1; i++) {
-            newPath.append(a[i]).append("/");
-        }
-
         try {
+            String[] a = path.split("/");
+            Log.d("path", path);
+            StringBuilder newPath = new StringBuilder();
+            for (int i = 0; i < a.length - 1; i++) {
+                newPath.append(a[i]).append("/");
+            }
             String at = Environment.getExternalStorageDirectory().getAbsolutePath();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("folder", newPath.toString());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
+            if (newPath.toString().length() <= at.length()) {
+                finish();
+            }
+            else{
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("folder", newPath.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+
+        } catch (Exception e) {
+
         } finally {
             super.onBackPressed();
             finish();
