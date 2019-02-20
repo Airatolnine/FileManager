@@ -1,10 +1,8 @@
 package com.example.airatonline.filemanager;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +12,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -29,28 +31,34 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager myManager;
     String path;
     Toolbar toolbar;
+    LinearLayout navLayout;
 
     String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
+        navLayout = findViewById(R.id.navLayout);
         setSupportActionBar(toolbar);
+        ImageView home = new ImageView(getApplicationContext());
+        home.setImageResource(R.drawable.ic_home_black_24dp);
+        navLayout.addView(home);
 
         Intent intent = getIntent();
 
 
-        try{
+        try {
             path = intent.getStringExtra("folder");
             Log.d("AAA|main", path);
-        }catch (Exception e){
+        } catch (Exception e) {
             path = null;
         }
 
 
-        recyclerView = (RecyclerView) findViewById(R.id.list_item);
+        recyclerView = findViewById(R.id.list_item);
         recyclerView.setHasFixedSize(true);
         myManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(myManager);
@@ -61,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
                     permissions,
                     1);
         } else {
-            if(path!=null){
+            if (path != null) {
                 fillActivity(path);
-            }else{
+            } else {
                 fillActivity(Environment.getExternalStorageDirectory().getAbsolutePath());
             }
         }
@@ -82,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    if(path!=null){
+                    if (path != null) {
                         fillActivity(path);
-                    }else{
+                    } else {
                         fillActivity(Environment.getExternalStorageDirectory().getAbsolutePath());
                     }
                 } else {
@@ -93,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                     // functionality that depends on this permission.
                     Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -109,11 +116,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillActivity(String path) {
         File file = new File(path);
+        String pathFromHome = path.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "");
+        String[] foldersFromHome = pathFromHome.split("/");
+        View view = new View(getApplicationContext());
+        view.setMinimumWidth(10);
+        for (String aFoldersFromHome : foldersFromHome) {
+            TextView textView = new TextView(getApplicationContext());
+            textView.setText(aFoldersFromHome);
+            ImageView imageView = new ImageView(getApplicationContext());
+            imageView.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
+
+
+            //navLayout.addView(view);
+            navLayout.addView(textView);
+            navLayout.addView(imageView);
+        }
         Log.d("AAAA", file.getAbsolutePath());
         File[] files = file.listFiles();
-        if(files!=null){
-            List<File> fileList = new ArrayList<>();
-            fileList.addAll(Arrays.asList(files));
+        if (files != null) {
+            List<File> fileList = new ArrayList<>(Arrays.asList(files));
             Collections.sort(fileList);
             Element[] e = new Element[files.length];
             for (int i = 0; i < fileList.size(); i++) {
@@ -126,9 +147,33 @@ public class MainActivity extends AppCompatActivity {
                 e[i] = tmp;
             }
             Log.d("files", Arrays.toString(files));
-            myAdapter = new MyAdapter(e, this, path);
+            myAdapter = new MyAdapter(e, this, path, this);
             recyclerView.setAdapter(myAdapter);
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        String[] a = path.split("/");
+        Log.d("path", path);
+        StringBuilder newPath = new StringBuilder();
+        for (int i = 0; i < a.length - 1; i++) {
+            newPath.append(a[i]).append("/");
+        }
+
+        try {
+            String at = Environment.getExternalStorageDirectory().getAbsolutePath();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("folder", newPath.toString());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        } finally {
+            super.onBackPressed();
+            finish();
+        }
+
 
     }
 }

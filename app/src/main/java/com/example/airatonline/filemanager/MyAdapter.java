@@ -1,5 +1,6 @@
 package com.example.airatonline.filemanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -22,6 +23,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private Element[] myData;
     private Context context;
     private String path;
+    private Activity activity;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
@@ -36,10 +38,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(Element[] myData, Context context, String path) {
+    public MyAdapter(Element[] myData, Context context, String path, Activity activity) {
         this.myData = myData;
         this.context = context;
         this.path = path;
+        this.activity = activity;
     }
 
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,6 +65,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     intent.putExtra("folder", path + "/" + myData[position].text);
                     Log.d("AAA", file.getAbsolutePath());
                     context.startActivity(intent);
+                    activity.finish();
                 }
 
             }
@@ -72,5 +76,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return myData.length;
     }
+
 
 }
