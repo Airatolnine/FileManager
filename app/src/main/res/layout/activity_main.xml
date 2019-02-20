@@ -6,29 +6,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <HorizontalScrollView
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" >
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/navLayout"
-                android:orientation="horizontal" >
+                android:layout_height="match_parent">
 
-            </LinearLayout>
-        </HorizontalScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/navLayout"
+                    android:orientation="horizontal" >
 
-    </android.support.v7.widget.Toolbar>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.v4.widget.NestedScrollView>
+
+
 
 
 
