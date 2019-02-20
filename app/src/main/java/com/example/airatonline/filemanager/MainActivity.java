@@ -1,6 +1,7 @@
 package com.example.airatonline.filemanager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     String path;
     Toolbar toolbar;
     LinearLayout navLayout;
+    Context context = this;
 
     String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -45,6 +47,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ImageView home = new ImageView(getApplicationContext());
         home.setImageResource(R.drawable.ic_home_black_24dp);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("folder", path);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
         navLayout.addView(home);
 
         Intent intent = getIntent();
@@ -116,12 +128,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillActivity(String path) {
         File file = new File(path);
-        String pathFromHome = path.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "");
-        String[] foldersFromHome = pathFromHome.split("/");
+        final String pathFromHome = path.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "");
+        final String[] foldersFromHome = pathFromHome.split("/");
         View view = new View(getApplicationContext());
         view.setMinimumWidth(10);
-        for (String aFoldersFromHome : foldersFromHome) {
-            TextView textView = new TextView(getApplicationContext());
+        for (final String aFoldersFromHome : foldersFromHome) {
+            final TextView textView = new TextView(getApplicationContext());
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    StringBuilder path = new StringBuilder();
+                    //int id = pathFromHome.indexOf(textView.getText().toString());
+                    path.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append("/");
+                    int i=-1;
+                    do {
+                        i++;
+                        path.append(foldersFromHome[i]);
+                    } while (!foldersFromHome[i].equals(textView.getText().toString()));
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("folder", path.toString());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                }
+            });
             textView.setText(aFoldersFromHome);
             ImageView imageView = new ImageView(getApplicationContext());
             imageView.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
@@ -165,8 +194,7 @@ public class MainActivity extends AppCompatActivity {
             String at = Environment.getExternalStorageDirectory().getAbsolutePath();
             if (newPath.toString().length() <= at.length()) {
                 finish();
-            }
-            else{
+            } else {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("folder", newPath.toString());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
