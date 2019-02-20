@@ -1,10 +1,13 @@
 package com.example.airatonline.filemanager;
 
 import android.Manifest;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -44,14 +47,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
-        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
+
+        int colorFrom = Color.argb(255, 0,0,255);
+        int colorTo = Color.argb(50, 0,0,255);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(10000); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                toolbar.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
 
         navLayout = findViewById(R.id.navLayout);
         setSupportActionBar(toolbar);
@@ -150,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     StringBuilder path = new StringBuilder();
                     //int id = pathFromHome.indexOf(textView.getText().toString());
                     path.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append("/");
-                    int i=-1;
+                    int i = -1;
                     do {
                         i++;
                         path.append(foldersFromHome[i]);
