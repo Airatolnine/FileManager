@@ -6,8 +6,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.TransitionDrawable;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout navLayout;
     Context context = this;
 
+    Element[] e;
+
     String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
@@ -50,13 +58,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+            final Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            //window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            int colorFrom = Color.argb(255, 0, 0, 0);
+            int colorTo = Color.argb(255, 0, 0, 255);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(10000); // milliseconds
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    window.setStatusBarColor((int) animator.getAnimatedValue());
+                    window.setNavigationBarColor((int) animator.getAnimatedValue());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        window.setNavigationBarDividerColor((int) animator.getAnimatedValue());
+                    }
+                }
+
+            });
+            colorAnimation.start();
         }
 
-        int colorFrom = Color.argb(255, 0,0,255);
-        int colorTo = Color.argb(50, 0,0,255);
+        int colorFrom = Color.argb(255, 0, 0, 255);
+        int colorTo = Color.argb(50, 0, 0, 255);
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
         colorAnimation.setDuration(10000); // milliseconds
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -181,23 +206,45 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = new ImageView(getApplicationContext());
             imageView.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
 
-
             //navLayout.addView(view);
-            navLayout.addView(textView);
-            navLayout.addView(imageView);
+            if (!textView.getText().equals("")) {
+                navLayout.addView(imageView);
+                navLayout.addView(textView);
+            }
+
         }
         Log.d("AAAA", file.getAbsolutePath());
         File[] files = file.listFiles();
         if (files != null) {
             List<File> fileList = new ArrayList<>(Arrays.asList(files));
             Collections.sort(fileList);
-            Element[] e = new Element[files.length];
+            e = new Element[files.length];
             for (int i = 0; i < fileList.size(); i++) {
                 Element tmp;
                 if (fileList.get(i).isDirectory()) {
-                    tmp = new Element(fileList.get(i).getName(), R.mipmap.ic_folder);
+                    tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_folder));
                 } else {
-                    tmp = new Element(fileList.get(i).getName(), R.mipmap.ic_file);
+                    switch (fileList.get(i).getName().substring(fileList.get(i).getName().lastIndexOf('.'))) {
+                        case ".jpg":
+
+                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
+                            updateImage(i);
+                            break;
+                        case ".jpeg":
+
+                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
+                            updateImage(i);
+                            break;
+                        case ".png":
+
+                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
+                            updateImage(i);
+                            break;
+                        default:
+
+                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
+                            break;
+                    }
                 }
                 e[i] = tmp;
             }
@@ -235,5 +282,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    void updateImage(int i) {
+        class UpdloadTask extends AsyncTask<Integ, Void, Integ> {
+
+            @Override
+            protected Integ doInBackground(Integ... integs) {
+                File file = e[integs[0].a].file;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                //bitmap = Bitmap.createScaledBitmap(bitmap, 100,100,false);
+                integs[0].bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+
+                return integs[0];
+            }
+
+            @Override
+            protected void onPostExecute(Integ aVoid) {
+                super.onPostExecute(aVoid);
+                e[aVoid.a] = new Element(e[aVoid.a].file, aVoid.bitmap);
+                myAdapter.notifyDataSetChanged();
+            }
+        }
+        new UpdloadTask().execute(new Integ(i));
+    }
+
+}
+
+class Integ {
+    public int a;
+    public Bitmap bitmap;
+
+    Integ(int a) {
+        this.a = a;
     }
 }

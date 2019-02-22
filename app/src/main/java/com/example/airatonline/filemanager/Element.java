@@ -1,17 +1,14 @@
 package com.example.airatonline.filemanager;
 
-public class Element {
-    public String text;
-    public int image;
+import android.graphics.Bitmap;
+import java.io.File;
 
-    public Element(String text, int image){
-        this.text = text;
+public class Element {
+    public File file;
+    public Bitmap image;
+
+    public Element(File file, Bitmap image){
+        this.file = file;
         this.image = image;
-    }
-    public String getText(){
-        return text;
-    }
-    public int getImage(){
-        return image;
     }
 }

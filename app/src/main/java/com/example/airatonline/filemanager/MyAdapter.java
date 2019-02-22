@@ -47,22 +47,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        holder.mTextView.setText(myData[position].text);
-        holder.imgType.setImageDrawable(ContextCompat.getDrawable(context, myData[position].image));
+        holder.mTextView.setText(myData[position].file.getName());
+        holder.imgType.setImageBitmap(myData[position].image);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("AAAA", String.valueOf(position));
-                File file = new File(path + "/" + myData[position].text);
+                File file = new File(path + "/" + myData[position].file.getName());
                 if (file.isDirectory()) {
                     Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("folder", path + "/" + myData[position].text);
+                    intent.putExtra("folder", path + "/" + myData[position].file.getName());
                     Log.d("AAA", file.getAbsolutePath());
                     context.startActivity(intent);
                     activity.finish();
