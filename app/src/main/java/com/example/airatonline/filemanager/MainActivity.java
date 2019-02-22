@@ -291,10 +291,18 @@ public class MainActivity extends AppCompatActivity {
             protected Integ doInBackground(Integ... integs) {
                 File file = e[integs[0].a].file;
                 BitmapFactory.Options options = new BitmapFactory.Options();
+                Log.d("AAA", "FileSize: "+ String.valueOf(file.length()));
+                if(file.length()>100000){
+                    options.inSampleSize = 50;
+                }
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                //bitmap = Bitmap.createScaledBitmap(bitmap, 100,100,false);
-                integs[0].bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                try{
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100*bitmap.getHeight()/bitmap.getWidth(), false);
+                    integs[0].bitmap = bitmap;
+                }catch (IllegalArgumentException e){
+//                    Toast.makeText(context, "ErrorBitMap", Toast.LENGTH_SHORT).show();
+                }
 
                 return integs[0];
             }
