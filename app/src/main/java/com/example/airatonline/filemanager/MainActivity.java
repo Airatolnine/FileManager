@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     LinearLayout navLayout;
     Context context = this;
+    HorizontalScrollView scrollView;
 
     Element[] e;
 
@@ -57,12 +59,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
+        scrollView = findViewById(R.id.scrollView);
+        scrollView.setSmoothScrollingEnabled(false);
+        scrollView.setHorizontalScrollBarEnabled(false);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             final Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
             //window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            int colorFrom = Color.TRANSPARENT;
+            int colorFrom = Color.argb(20, 0, 0, 255);
             int colorTo = Color.argb(100, 0, 0, 255);
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.setDuration(500); // milliseconds
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             colorAnimation.start();
         }
 
-        int colorFrom = Color.argb(0, 0, 0, 255);
+        int colorFrom = Color.argb(20, 0, 0, 255);
         int colorTo = Color.argb(50, 0, 0, 255);
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
         colorAnimation.setDuration(500); // milliseconds
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         navLayout = findViewById(R.id.navLayout);
         setSupportActionBar(toolbar);
         ImageView home = new ImageView(getApplicationContext());
-        home.setImageResource(R.drawable.ic_home_black_24dp);
+        home.setImageResource(R.drawable.ic_home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("folder", path);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
+                finish();
             }
         });
         navLayout.addView(home);
@@ -172,12 +178,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
-
     private void fillActivity(String path) {
         File file = new File(path);
         final String pathFromHome = path.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "");
@@ -190,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     StringBuilder path = new StringBuilder();
-                    //int id = pathFromHome.indexOf(textView.getText().toString());
                     path.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append("/");
                     int i = -1;
                     do {
@@ -204,16 +203,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             textView.setText(aFoldersFromHome);
+            textView.setTextSize(20);
             ImageView imageView = new ImageView(getApplicationContext());
+            if (aFoldersFromHome.equals(foldersFromHome[foldersFromHome.length - 1])) {
+                textView.setTextColor(Color.argb(200, 255, 172, 0));
+            }
             imageView.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
-
-            //navLayout.addView(view);
             if (!textView.getText().equals("")) {
                 navLayout.addView(imageView);
                 navLayout.addView(textView);
             }
 
         }
+
+        scrollView.postDelayed(new Runnable() {
+            public void run() {
+
+                scrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            }
+        }, 10L);
         Log.d("AAAA", file.getAbsolutePath());
         File[] files = file.listFiles();
         if (files != null) {
@@ -252,21 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (Exception e) {
 
-        } finally {
-            super.onBackPressed();
-            finish();
         }
-
-
-    }
-
-}
-
-class Integ {
-    public int a;
-    public Bitmap bitmap;
-
-    Integ(int a) {
-        this.a = a;
+        finish();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.Collections;
@@ -32,12 +35,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private TextView mTextView;
         private ImageView imgType;
         private LinearLayout layout;
+        private TextView additionText;
 
         public MyViewHolder(View v) {
             super(v);
             mTextView = v.findViewById(R.id.textView);
             imgType = v.findViewById(R.id.image);
             layout = v.findViewById(R.id.layout);
+            additionText = v.findViewById(R.id.textIsEmpty);
         }
     }
 
@@ -56,9 +61,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.mTextView.setText(myData[position].file.getName());
+        holder.additionText.setTextColor(Color.argb(50,0,0,0));
+        holder.additionText.setTextSize(12);
         if (myData[position].file.isDirectory()) {
             holder.imgType.setImageResource(R.drawable.ic_folder);
+            if(myData[position].file.listFiles().length==0){
+                holder.additionText.setText("Пустая папка");
+
+            }
         } else {
+            if(myData[position].file.length()<1000){
+                holder.additionText.setText(String.valueOf(myData[position].file.length()) + " Б");
+            }
+            else if(myData[position].file.length()/1000<1000){
+                holder.additionText.setText(String.valueOf(myData[position].file.length()/1000) + " КБ");
+            }
+            else if(myData[position].file.length()/1000/1000<1000){
+                holder.additionText.setText(String.valueOf(myData[position].file.length()/1000/1000) + " МБ");
+            }
+            else if(myData[position].file.length()/1000/1000/1000<1000){
+                holder.additionText.setText(String.valueOf(myData[position].file.length()/1000/1000/1000) + " ГБ");
+            }
             switch (myData[position].file.getName().substring(myData[position].file.getName().lastIndexOf('.'))) {
                 case ".jpg":
                     updateImage(holder.imgType, myData[position].file);
