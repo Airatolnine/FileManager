@@ -5,10 +5,8 @@ import java.io.File;
 
 public class Element {
     public File file;
-    public Bitmap image;
 
-    public Element(File file, Bitmap image){
+    public Element(File file){
         this.file = file;
-        this.image = image;
     }
 }

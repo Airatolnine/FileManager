@@ -220,32 +220,7 @@ public class MainActivity extends AppCompatActivity {
             Collections.sort(fileList);
             e = new Element[files.length];
             for (int i = 0; i < fileList.size(); i++) {
-                Element tmp;
-                if (fileList.get(i).isDirectory()) {
-                    tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_folder));
-                } else {
-                    switch (fileList.get(i).getName().substring(fileList.get(i).getName().lastIndexOf('.'))) {
-                        case ".jpg":
-
-                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
-                            updateImage(i);
-                            break;
-                        case ".jpeg":
-
-                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
-                            updateImage(i);
-                            break;
-                        case ".png":
-
-                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
-                            updateImage(i);
-                            break;
-                        default:
-
-                            tmp = new Element(fileList.get(i), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_file));
-                            break;
-                    }
-                }
+                Element tmp = new Element(fileList.get(i));
                 e[i] = tmp;
             }
             Log.d("files", Arrays.toString(files));
@@ -282,39 +257,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }
-
-    void updateImage(int i) {
-        class UpdloadTask extends AsyncTask<Integ, Void, Integ> {
-
-            @Override
-            protected Integ doInBackground(Integ... integs) {
-                File file = e[integs[0].a].file;
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                Log.d("AAA", "FileSize: "+ String.valueOf(file.length()));
-                if(file.length()>100000){
-                    options.inSampleSize = 50;
-                }
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                try{
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100*bitmap.getHeight()/bitmap.getWidth(), false);
-                    integs[0].bitmap = bitmap;
-                }catch (IllegalArgumentException e){
-//                    Toast.makeText(context, "ErrorBitMap", Toast.LENGTH_SHORT).show();
-                }
-
-                return integs[0];
-            }
-
-            @Override
-            protected void onPostExecute(Integ aVoid) {
-                super.onPostExecute(aVoid);
-                e[aVoid.a] = new Element(e[aVoid.a].file, aVoid.bitmap);
-                myAdapter.notifyDataSetChanged();
-            }
-        }
-        new UpdloadTask().execute(new Integ(i));
     }
 
 }

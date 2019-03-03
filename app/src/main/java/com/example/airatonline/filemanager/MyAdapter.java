@@ -3,6 +3,9 @@ package com.example.airatonline.filemanager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -53,7 +56,34 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.mTextView.setText(myData[position].file.getName());
-        holder.imgType.setImageBitmap(myData[position].image);
+        if (myData[position].file.isDirectory()) {
+            holder.imgType.setImageResource(R.drawable.ic_folder);
+        } else {
+            switch (myData[position].file.getName().substring(myData[position].file.getName().lastIndexOf('.'))) {
+                case ".jpg":
+                    updateImage(holder.imgType, myData[position].file);
+                    break;
+
+                case ".jpeg":
+                    updateImage(holder.imgType, myData[position].file);
+                    break;
+
+                case ".png":
+                    updateImage(holder.imgType, myData[position].file);
+                    break;
+                case ".pdf":
+                    holder.imgType.setImageResource(R.drawable.ic_pdf_file);
+                    break;
+
+                case ".apk":
+                    holder.imgType.setImageResource(R.drawable.ic_apk_file);
+                    break;
+
+                default:
+                    holder.imgType.setImageResource(R.drawable.ic_file);
+
+            }
+        }
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +99,34 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
             }
         });
+    }
+
+    void updateImage(final ImageView imageView, final File file) {
+        class UpdloadTask extends AsyncTask<Void, Void, Bitmap> {
+
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Log.d("AAA", "FileSize: " + String.valueOf(file.length()));
+                if (file.length() > 100000) {
+                    options.inSampleSize = 50;
+                }
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                try {
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100 * bitmap.getHeight() / bitmap.getWidth(), false);
+                } catch (IllegalArgumentException e) {
+                }
+                return bitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                imageView.setImageBitmap(bitmap);
+            }
+        }
+        new UpdloadTask().execute();
     }
 
     @Override
