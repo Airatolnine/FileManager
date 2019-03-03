@@ -60,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             final Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
             //window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            int colorFrom = Color.argb(255, 0, 0, 0);
-            int colorTo = Color.argb(255, 0, 0, 255);
+            int colorFrom = Color.TRANSPARENT;
+            int colorTo = Color.argb(100, 0, 0, 255);
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-            colorAnimation.setDuration(10000); // milliseconds
+            colorAnimation.setDuration(500); // milliseconds
             colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
                 @Override
@@ -80,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
             colorAnimation.start();
         }
 
-        int colorFrom = Color.argb(255, 0, 0, 255);
+        int colorFrom = Color.argb(0, 0, 0, 255);
         int colorTo = Color.argb(50, 0, 0, 255);
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(10000); // milliseconds
+        colorAnimation.setDuration(500); // milliseconds
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
