@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -15,13 +16,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Collections;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -61,67 +66,101 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.mTextView.setText(myData[position].file.getName());
-        holder.additionText.setTextColor(Color.argb(50,0,0,0));
+        holder.additionText.setTextColor(Color.argb(50, 0, 0, 0));
         holder.additionText.setTextSize(12);
         if (myData[position].file.isDirectory()) {
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    File file = new File(path + "/" + myData[position].file.getName());
+                    intent.putExtra("folder", file.getAbsolutePath());
+                    Log.d("AAA", file.getAbsolutePath());
+                    context.startActivity(intent);
+                    activity.finish();
+                }
+            });
             holder.imgType.setImageResource(R.drawable.ic_folder);
-            if(myData[position].file.listFiles().length==0){
+            if (myData[position].file.listFiles().length == 0) {
                 holder.additionText.setText("Пустая папка");
 
             }
         } else {
-            if(myData[position].file.length()<1000){
+            if (myData[position].file.length() < 1000) {
                 holder.additionText.setText(String.valueOf(myData[position].file.length()) + " Б");
+            } else if (myData[position].file.length() / 1000 < 1000) {
+                holder.additionText.setText(String.valueOf(myData[position].file.length() / 1000) + " КБ");
+            } else if (myData[position].file.length() / 1000 / 1000 < 1000) {
+                holder.additionText.setText(String.valueOf(myData[position].file.length() / 1000 / 1000) + " МБ");
+            } else if (myData[position].file.length() / 1000 / 1000 / 1000 < 1000) {
+                holder.additionText.setText(String.valueOf(myData[position].file.length() / 1000 / 1000 / 1000) + " ГБ");
             }
-            else if(myData[position].file.length()/1000<1000){
-                holder.additionText.setText(String.valueOf(myData[position].file.length()/1000) + " КБ");
+            String extensions = myData[position].file.getName().substring(myData[position].file.getName().lastIndexOf('.') + 1);
+            Log.d("AAA", extensions + " ");
+            String mimetype = "";
+            String mimeElement = "";
+            try {
+                mimetype = mimeTypeFromExtensions(extensions);
+                mimeElement = mimetype.split("/")[0];
+                Log.d("AAA", mimetype + " ");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            else if(myData[position].file.length()/1000/1000<1000){
-                holder.additionText.setText(String.valueOf(myData[position].file.length()/1000/1000) + " МБ");
-            }
-            else if(myData[position].file.length()/1000/1000/1000<1000){
-                holder.additionText.setText(String.valueOf(myData[position].file.length()/1000/1000/1000) + " ГБ");
-            }
-            switch (myData[position].file.getName().substring(myData[position].file.getName().lastIndexOf('.'))) {
-                case ".jpg":
+            switch (mimeElement) {
+                case "image":
                     updateImage(holder.imgType, myData[position].file);
-                    break;
+                    final String finalMimetype = mimetype;
+                    holder.layout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
 
-                case ".jpeg":
-                    updateImage(holder.imgType, myData[position].file);
+                            Log.d("AAA", finalMimetype + " ");
+                            try {
+                                intent.setDataAndType(Uri.parse(new String(myData[position].file.getAbsolutePath().getBytes(), "UTF-8")), finalMimetype);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                     break;
+                case "application":
+                    final String finalMimetype1 = mimetype;
+                    holder.layout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
 
-                case ".png":
-                    updateImage(holder.imgType, myData[position].file);
-                    break;
-                case ".pdf":
-                    holder.imgType.setImageResource(R.drawable.ic_pdf_file);
-                    break;
+                            Log.d("AAA", finalMimetype1 + " ");
+                            try {
+                                intent.setDataAndType(Uri.parse(new String(myData[position].file.getAbsolutePath().getBytes(), "UTF-8")), finalMimetype1);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            } catch (Exception e){
+                                Toast.makeText(context, "Not found application", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
-                case ".apk":
-                    holder.imgType.setImageResource(R.drawable.ic_apk_file);
+                    switch (extensions) {
+                        case "pdf":
+                            holder.imgType.setImageResource(R.drawable.ic_pdf_file);
+                            break;
+                        case "apk":
+                            holder.imgType.setImageResource(R.drawable.ic_apk_file);
+                            break;
+                    }
                     break;
-
                 default:
                     holder.imgType.setImageResource(R.drawable.ic_file);
 
             }
         }
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("AAAA", String.valueOf(position));
-                File file = new File(path + "/" + myData[position].file.getName());
-                if (file.isDirectory()) {
-                    Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("folder", path + "/" + myData[position].file.getName());
-                    Log.d("AAA", file.getAbsolutePath());
-                    context.startActivity(intent);
-                    activity.finish();
-                }
 
-            }
-        });
     }
 
     void updateImage(final ImageView imageView, final File file) {
@@ -157,5 +196,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return myData.length;
     }
 
-
+    String mimeTypeFromExtensions(String extension) {
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
+    }
 }
