@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -128,30 +129,46 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     break;
                 case "application":
                     final String finalMimetype1 = mimetype;
-                    holder.layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
 
-                            Log.d("AAA", finalMimetype1 + " ");
-                            try {
-                                intent.setDataAndType(Uri.parse(new String(myData[position].file.getAbsolutePath().getBytes(), "UTF-8")), finalMimetype1);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            } catch (Exception e){
-                                Toast.makeText(context, "Not found application", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
 
                     switch (extensions) {
                         case "pdf":
                             holder.imgType.setImageResource(R.drawable.ic_pdf_file);
+                            holder.layout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    Log.d("AAA", finalMimetype1 + " ");
+                                    try {
+                                        intent.setDataAndType(Uri.parse(new String(myData[position].file.getAbsolutePath().getBytes(), "UTF-8")), finalMimetype1);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        context.startActivity(intent);
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    } catch (Exception e){
+                                        Toast.makeText(context, "Not found application", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                             break;
                         case "apk":
                             holder.imgType.setImageResource(R.drawable.ic_apk_file);
+                            holder.layout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    Log.d("AAA", finalMimetype1 + " ");
+                                    try {
+                                        intent.setDataAndType(Uri.parse(new String(myData[position].file.getAbsolutePath().getBytes(), "UTF-8")), finalMimetype1);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(intent);
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    } catch (Exception e){
+                                        Toast.makeText(context, "Not found application", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                             break;
                     }
                     break;
