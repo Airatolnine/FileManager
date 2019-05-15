@@ -178,14 +178,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String[] removeEmptyElements(String[] path){
+        List<String> temp = new ArrayList<String>(Arrays.asList(path));
+        temp.remove("");
+        return temp.toArray(new String[0]);
+    }
+
     private void fillActivity(String path) {
         File file = new File(path);
         final String pathFromHome = path.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "");
-        final String[] foldersFromHome = pathFromHome.split("/");
+        String[] foldersFromHome = pathFromHome.split("/");
+        foldersFromHome = removeEmptyElements(foldersFromHome);
+        Log.d("path|FoldersFromHome", Arrays.toString(foldersFromHome));
         View view = new View(getApplicationContext());
         view.setMinimumWidth(10);
         for (final String aFoldersFromHome : foldersFromHome) {
             final TextView textView = new TextView(getApplicationContext());
+            final String[] finalFoldersFromHome = foldersFromHome;
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -193,9 +202,13 @@ public class MainActivity extends AppCompatActivity {
                     path.append(Environment.getExternalStorageDirectory().getAbsolutePath()).append("/");
                     int i = -1;
                     do {
+
+                        Log.d("path|197", path.toString());
                         i++;
-                        path.append(foldersFromHome[i]);
-                    } while (!foldersFromHome[i].equals(textView.getText().toString()));
+                        path.append(finalFoldersFromHome[i]);
+                        if(i<finalFoldersFromHome.length-1)
+                        path.append("/");
+                    } while (!finalFoldersFromHome[i].equals(textView.getText().toString()));
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra("folder", path.toString());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
