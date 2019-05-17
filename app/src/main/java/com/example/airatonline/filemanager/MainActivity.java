@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         int colorFrom = Color.argb(20, 0, 0, 255);
         int colorTo = Color.argb(50, 0, 0, 255);
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(500); // milliseconds
+        colorAnimation.setDuration(500); 
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
@@ -153,22 +153,14 @@ public class MainActivity extends AppCompatActivity {
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
                     if (path != null) {
                         fillActivity(path);
                     } else {
                         fillActivity(Environment.getExternalStorageDirectory().getAbsolutePath());
                     }
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                     Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -88,13 +89,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             }
         } else {
             if (myData[position].file.length() < 1000) {
-                holder.additionText.setText(String.valueOf(myData[position].file.length()) + " Б");
+                holder.additionText.setText((myData[position].file.length()) + " Б");
             } else if (myData[position].file.length() / 1000 < 1000) {
-                holder.additionText.setText(String.valueOf(myData[position].file.length() / 1000) + " КБ");
+                holder.additionText.setText((myData[position].file.length() / 1000) + " КБ");
             } else if (myData[position].file.length() / 1000 / 1000 < 1000) {
-                holder.additionText.setText(String.valueOf(myData[position].file.length() / 1000 / 1000) + " МБ");
+                holder.additionText.setText((myData[position].file.length() / 1000 / 1000) + " МБ");
             } else if (myData[position].file.length() / 1000 / 1000 / 1000 < 1000) {
-                holder.additionText.setText(String.valueOf(myData[position].file.length() / 1000 / 1000 / 1000) + " ГБ");
+                holder.additionText.setText((myData[position].file.length() / 1000 / 1000 / 1000) + " ГБ");
             }
             String extensions = myData[position].file.getName().substring(myData[position].file.getName().lastIndexOf('.') + 1);
             Log.d("AAA", extensions + " ");
@@ -104,19 +105,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 mimetype = mimeTypeFromExtensions(extensions);
                 mimeElement = mimetype.split("/")[0];
                 Log.d("AAA", mimetype + " ");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
             switch (mimeElement) {
                 case "image":
-                    updateImage(holder.imgType, myData[position].file);
+                    updateImage(holder.imgType, myData[position].file, extensions);
                     final String finalMimetype = mimetype;
                     holder.layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
-
-                            Log.d("AAA", finalMimetype + " ");
                             try {
                                 intent.setDataAndType(Uri.parse(new String(myData[position].file.getAbsolutePath().getBytes(), "UTF-8")), finalMimetype);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -145,7 +145,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                         context.startActivity(intent);
                                     } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                    } catch (Exception e){
+                                    } catch (Exception e) {
                                         Toast.makeText(context, "Not found application", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -164,7 +164,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                         context.startActivity(intent);
                                     } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                    } catch (Exception e){
+                                    } catch (Exception e) {
                                         Toast.makeText(context, "Not found application", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -180,16 +180,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     }
 
-    void updateImage(final ImageView imageView, final File file) {
+    void updateImage(final ImageView imageView, final File file, final String extentions) {
+
         class UpdloadTask extends AsyncTask<Void, Void, Bitmap> {
 
             @Override
             protected Bitmap doInBackground(Void... voids) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                Log.d("AAA", "FileSize: " + String.valueOf(file.length()));
-                if (file.length() > 100000) {
-                    options.inSampleSize = 50;
-                }
+                Log.d("AAA", "FileSize: " + file.length());
+                options.inSampleSize = 10;
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
                 try {
