@@ -23,9 +23,10 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:orientation="horizontal">
-            <android.support.design.button.MaterialButton
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/btnOpenStatusActivity"
                 android:text="AAAA" />
 
             <HorizontalScrollView

@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout navLayout;
     Context context = this;
     HorizontalScrollView scrollView;
+    Button btnOpenStatus;
 
     Element[] e;
 
@@ -58,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnOpenStatus = findViewById(R.id.btnOpenStatusActivity);
+        btnOpenStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, statusActivity.class);
+                startActivity(intent);
+            }
+        });
         toolbar = findViewById(R.id.toolbar);
         scrollView = findViewById(R.id.scrollView);
         scrollView.setSmoothScrollingEnabled(false);
