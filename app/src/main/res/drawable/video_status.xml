@@ -1,2 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:width="100dp"
+        android:height="100dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:innerRadius="0dp"
+            android:shape="oval"
+            android:thicknessRatio="1"
+            android:useLevel="false">
+            <solid android:color="@android:color/holo_purple" />
+        </shape>
+    </item>
+    <item
+        android:width="80dp"
+        android:height="25dp"
+        android:bottom="-3dp"
+        android:drawable="@drawable/status_bottom_oval"
+        android:gravity="bottom|center" />
+    <item
+        android:width="50dp"
+        android:height="50dp"
+        android:drawable="@drawable/ic_video_light"
+        android:gravity="center" />
+
+</layer-list>
