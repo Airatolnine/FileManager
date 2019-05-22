@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:id="@+id/imgTap"
             android:orientation="vertical">
 
             <ImageView
@@ -53,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:id="@+id/videoTap"
             android:orientation="vertical">
 
             <ImageView

@@ -1,9 +1,13 @@
 package com.example.airatonline.filemanager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -17,6 +21,8 @@ public class statusActivity extends AppCompatActivity {
     int imgCountInt = 0;
     int videoCountInt = 0;
     int musicCountInt = 0;
+    Context context = this;
+
 
 
     @Override
@@ -25,6 +31,20 @@ public class statusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_status);
         TextView imgCount = findViewById(R.id.imgCount);
         TextView videoView = findViewById(R.id.videoCount);
+        ( findViewById(R.id.imgTap)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        });
+        ( findViewById(R.id.videoTap)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        });
         String path = Environment.getExternalStorageDirectory() + "/";
         Log.d("AAA", path);
         countFun(path);
