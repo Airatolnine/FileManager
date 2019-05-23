@@ -21,6 +21,8 @@ public class statusActivity extends AppCompatActivity {
     int imgCountInt = 0;
     int videoCountInt = 0;
     int musicCountInt = 0;
+    int applicationCountInt = 0;
+
     Context context = this;
 
 
@@ -58,7 +60,7 @@ public class statusActivity extends AppCompatActivity {
     void countFun(String path) {
         File[] files = new File(path).listFiles();//Получили все файлы в DCIM
         for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory()) {
+            if (files[i].isDirectory()&& files[i].getName().charAt(0) != '.' && !files[i].getName().equals("Android")) {
                 countFun(path + "/" + files[i].getName());
             } else {
                 String extension = files[i].getName().substring(files[i].getName().lastIndexOf('.') + 1);
@@ -71,6 +73,12 @@ public class statusActivity extends AppCompatActivity {
                     }
                     else if(mimeElement.equals("video")){
                         videoCountInt++;
+                    }
+                    else if(mimeElement.equals("audio")){
+                        musicCountInt++;
+                    }
+                    else if(mimeElement.equals("text") || mimeElement.equals("application")){
+                       applicationCountInt++;
                     }
                 }
             }
