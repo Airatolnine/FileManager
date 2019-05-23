@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="106dp"
                 android:background="@color/img_color"
-                android:src="@drawable/img"
+                android:src="@drawable/img_status"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,6 +77,124 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/musicTap"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/musicView"
+                android:layout_width="100dp"
+                android:layout_height="106dp"
+                android:src="@drawable/music_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/musicCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginBottom="3dp"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/musicView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/textTap"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="106dp"
+                android:background="@color/img_color"
+                android:src="@drawable/text_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:text=""
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/archiveTap"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/archiveView"
+                android:layout_width="100dp"
+                android:layout_height="106dp"
+                android:background="@color/img_color"
+                android:src="@drawable/archive_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/archiveCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginBottom="3dp"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/archiveView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/downloadTap"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/downloadView"
+                android:layout_width="100dp"
+                android:layout_height="106dp"
+                android:background="@color/img_color"
+                android:src="@drawable/download_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/downloadCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginBottom="3dp"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/downloadView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

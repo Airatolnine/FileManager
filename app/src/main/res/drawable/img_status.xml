@@ -3,9 +3,16 @@
 
 
     <item
-        android:drawable="@drawable/circle"
         android:width="100dp"
-        android:height="100dp"/>
+        android:height="100dp">
+        <shape
+            android:innerRadius="0dp"
+            android:shape="oval"
+            android:thicknessRatio="1"
+            android:useLevel="false" >
+            <solid android:color="@android:color/holo_red_light" />
+        </shape>
+    </item>
     <item
         android:drawable="@drawable/status_bottom_oval"
         android:width="80dp"

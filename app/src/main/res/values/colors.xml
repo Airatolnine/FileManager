@@ -6,4 +6,5 @@
     <color name="textBar">#000000</color>
     <color name="img_color">#00FF0000</color>
     <color name="status_text_color">#8B8B8B</color>
+    <color name="status_text_element">#CFCFCF</color>
 </resources>

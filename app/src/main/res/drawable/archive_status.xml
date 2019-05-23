@@ -9,8 +9,15 @@
             android:shape="oval"
             android:thicknessRatio="1"
             android:useLevel="false">
-            <solid android:color="@android:color/holo_purple" />
+            <solid android:color="@android:color/holo_blue_dark" />
+        <gradient
+            android:startColor="@android:color/holo_red_light"
+            android:centerColor="@android:color/holo_blue_light"
+            android:endColor="@android:color/holo_green_light"
+            android:angle="-90"
+            />
         </shape>
+
     </item>
     <item
         android:width="80dp"
@@ -21,7 +28,7 @@
     <item
         android:width="50dp"
         android:height="50dp"
-        android:drawable="@drawable/ic_video_light"
+        android:drawable="@drawable/ic_archive_light"
         android:gravity="center" />
 
 </layer-list>
