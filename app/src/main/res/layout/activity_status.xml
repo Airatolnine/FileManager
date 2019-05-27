@@ -6,195 +6,208 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".statusActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme">
-
-    </android.support.v7.widget.Toolbar>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.constraint.ConstraintLayout
+        android:background="@drawable/linear_layout_corners"
+        android:layout_margin="15dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/imgTap"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            android:textSize="20sp"
+            android:text="Категории"/>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="106dp"
-                android:background="@color/img_color"
-                android:src="@drawable/img_status"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
-            <TextView
-                android:id="@+id/imgCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text=""
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/videoTap"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/videoView"
-                android:layout_width="100dp"
-                android:layout_height="106dp"
-                android:background="@color/img_color"
-                android:src="@drawable/video_status"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/videoCount"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginBottom="3dp"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/videoView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-        <android.support.constraint.ConstraintLayout
+                android:layout_margin="10dp"
+                android:id="@+id/imgTap"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="106dp"
+                    android:background="@color/img_color"
+                    android:src="@drawable/img_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/imgCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text=""
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/videoTap"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/videoView"
+                    android:layout_width="100dp"
+                    android:layout_height="106dp"
+                    android:background="@color/img_color"
+                    android:src="@drawable/video_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/videoCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/videoView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/musicTap"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/musicView"
+                    android:layout_width="100dp"
+                    android:layout_height="106dp"
+                    android:src="@drawable/music_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/musicCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/musicView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/musicTap"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/musicView"
-                android:layout_width="100dp"
-                android:layout_height="106dp"
-                android:src="@drawable/music_status"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/musicCount"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginBottom="3dp"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/musicView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+                android:layout_margin="10dp"
+                android:id="@+id/textTap"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="106dp"
+                    android:background="@color/img_color"
+                    android:src="@drawable/text_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text=""
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/archiveTap"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/archiveView"
+                    android:layout_width="100dp"
+                    android:layout_height="106dp"
+                    android:background="@color/img_color"
+                    android:src="@drawable/archive_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/archiveCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/archiveView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/downloadTap"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/downloadView"
+                    android:layout_width="100dp"
+                    android:layout_height="106dp"
+                    android:background="@color/img_color"
+                    android:src="@drawable/download_status"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/downloadCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/downloadView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/textTap"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="106dp"
-                android:background="@color/img_color"
-                android:src="@drawable/text_status"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text=""
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/archiveTap"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/archiveView"
-                android:layout_width="100dp"
-                android:layout_height="106dp"
-                android:background="@color/img_color"
-                android:src="@drawable/archive_status"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/archiveCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginBottom="3dp"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/archiveView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:id="@+id/downloadTap"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/downloadView"
-                android:layout_width="100dp"
-                android:layout_height="106dp"
-                android:background="@color/img_color"
-                android:src="@drawable/download_status"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/downloadCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginBottom="3dp"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/downloadView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-    </LinearLayout>
 
 </LinearLayout>

@@ -73,34 +73,33 @@ public class MainActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         scrollView.setSmoothScrollingEnabled(false);
         scrollView.setHorizontalScrollBarEnabled(false);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            final Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        final Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            //window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            int colorFrom = Color.argb(20, 0, 0, 255);
-            int colorTo = Color.argb(100, 0, 0, 255);
-            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-            colorAnimation.setDuration(500); // milliseconds
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    window.setStatusBarColor((int) animator.getAnimatedValue());
-                    window.setNavigationBarColor((int) animator.getAnimatedValue());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        window.setNavigationBarDividerColor((int) animator.getAnimatedValue());
-                    }
-                }
-
-            });
-            colorAnimation.start();
-        }
-
+        //window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         int colorFrom = Color.argb(20, 0, 0, 255);
-        int colorTo = Color.argb(50, 0, 0, 255);
+        int colorTo = Color.argb(100, 0, 0, 255);
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(500); 
+        colorAnimation.setDuration(500); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                window.setStatusBarColor((int) animator.getAnimatedValue());
+                window.setNavigationBarColor((int) animator.getAnimatedValue());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    window.setNavigationBarDividerColor((int) animator.getAnimatedValue());
+                }
+            }
+
+        });
+        colorAnimation.start();
+
+
+        colorFrom = Color.argb(20, 0, 0, 255);
+        colorTo = Color.argb(50, 0, 0, 255);
+        colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(500);
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String[] removeEmptyElements(String[] path){
+    private String[] removeEmptyElements(String[] path) {
         List<String> temp = new ArrayList<String>(Arrays.asList(path));
         temp.remove("");
         return temp.toArray(new String[0]);
@@ -209,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("path|197", path.toString());
                         i++;
                         path.append(finalFoldersFromHome[i]);
-                        if(i<finalFoldersFromHome.length-1)
-                        path.append("/");
+                        if (i < finalFoldersFromHome.length - 1)
+                            path.append("/");
                     } while (!finalFoldersFromHome[i].equals(textView.getText().toString()));
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra("folder", path.toString());
